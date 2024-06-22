@@ -19,26 +19,28 @@ const WriteReview = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.dir(reviewData);
-    const formData = new FormData();
-    formData.append("title", reviewData.title);
-    formData.append("rating", reviewData.rating);
-    formData.append("review", reviewData.review);
-    formData.append("username", reviewData.username);
-    formData.append("password", reviewData.password);
-    formData.append("date_watched", reviewData.dateWatched);
-    formData.append("poster", reviewData.poster);
-    console.dir(formData.title);
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-Type": "multipart/form-data",
     };
+    const formData = new FormData();
+
+    if (reviewData.title) formData.append("title", reviewData.title);
+    if (reviewData.rating) formData.append("rating", reviewData.rating);
+    if (reviewData.review) formData.append("review", reviewData.review);
+    if (reviewData.username) formData.append("username", reviewData.username);
+    if (reviewData.password) formData.append("password", reviewData.password);
+    if (reviewData.dateWatched)
+      formData.append("date_watched", reviewData.dateWatched);
+    if (reviewData.poster instanceof File) {
+      formData.append("poster", reviewData.poster);
+    }
+
     try {
       console.log("Submitting review data:", formData);
       console.log("Submitting review data:", reviewData.poster);
       let response;
       if (reviewid) {
-        console.log(reviewData);
         response = await instance.patch(
           `/critique/review/${reviewid}/`,
           formData,
@@ -51,13 +53,6 @@ const WriteReview = () => {
           headers,
         });
       }
-
-      // if (response.status === 400) {
-      //   console.log("patch failed");
-      //   return;
-      // } else {
-      //   // console.error("Failed to submit review!");
-      // }
     } catch (e) {
       console.error(e);
       if (e.response && e.response.data) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import back from "../../assets/icon/backIcon.svg";
 import whiteback from "../../assets/icon/back_white.svg";
 import edit from "../../assets/icon/edit.svg";
@@ -10,6 +10,7 @@ import EditReviewModal from "../reviewdetail/EditReviewModal";
 import DeleteReviewModal from "../reviewdetail/DeleteReviewModal";
 const Header = ({ onButtonClick }) => {
   const { pathname } = useLocation();
+  const { reviewid } = useParams();
   const navigate = useNavigate();
   const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -39,12 +40,22 @@ const Header = ({ onButtonClick }) => {
             </ActionButton>
           </>
         )}
-        {pathname.startsWith("/writeReview") && (
-          <>
-            <BackImg src={back} onClick={openQuitModal} />
-            <ActionButton onClick={handleFormSubmit}>Submit</ActionButton>{" "}
-          </>
-        )}
+        {pathname.startsWith("/writeReview") &&
+          (reviewid ? (
+            <>
+              <BackImg src={back} onClick={() => navigate(-1)} />
+              <ActionButton onClick={handleFormSubmit}>
+                Submit
+              </ActionButton>{" "}
+            </>
+          ) : (
+            <>
+              <BackImg src={back} onClick={openQuitModal} />
+              <ActionButton onClick={handleFormSubmit}>
+                Submit
+              </ActionButton>{" "}
+            </>
+          ))}
         {pathname.startsWith("/reviewDetail") && (
           <>
             <BackImg src={whiteback} onClick={() => navigate(-1)} />

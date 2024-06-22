@@ -12,7 +12,6 @@ const ReviewList = () => {
         const res = await instance.get("/critique/review/");
         if (res.status === 200) {
           setReviewList(res.data);
-          console.log("정상");
         }
       } catch (e) {
         console.error(e);

@@ -40,7 +40,6 @@ const WriteReviewSection = ({
             password: fetchedData.password,
             dateWatched: fetchedData.date_watched,
           });
-          console.dir(reviewData);
           setPreviewSource(fetchedData.poster);
         } catch (e) {
           alert(e);
@@ -52,7 +51,6 @@ const WriteReviewSection = ({
 
   const onInputHandler = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setInputValues({
       ...inputValues,
       [name]: value,
